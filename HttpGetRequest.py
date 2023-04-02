@@ -19,6 +19,7 @@ def get_game_servers():
     game_server_names = request_body["game_server_names"]
     # load the data for the game servers
     game_servers = load_data(game_server_names)
+
     # create a list of dictionaries from the list of GameServer objects
     game_servers_dicts = [game_server.to_dict() for game_server in game_servers]
     # create a dictionary to hold the list of dictionaries

@@ -14,7 +14,7 @@ DATA_DIRECTORY = "GameServerData"
 
 
 # define a function that will generate a GameServer object with random data for each game in the list_of_games list
-def generate_data(list_of_games):
+def generate_data(list_of_games: list):
     # create an empty list to hold GameServer objects
     game_servers = []
     # iterate over the list of games
@@ -30,21 +30,13 @@ def generate_data(list_of_games):
 
 # define a function that will store data to a json file.
 #  the function should take a GameServer object as a parameter.
-def store_data(game_server):
-    # create a dictionary from the GameServer object
-    data = {"game_name": game_server.get_game_name(), "server_name": game_server.get_server_name(),
-            "server_region": game_server.get_server_region(), "number_of_players": game_server.get_number_of_players(),
-            "server_up_down": game_server.get_server_up_down(), "results": game_server.get_results()}
-    # open a file to write the data to
-    with open(f"GameServerData/{game_server.get_game_name()}.json", "w") as json_file:
-        # write the data to the file
-        json.dump(data, json_file)
+
 
 
 # define a function that will update the data in a game server json file with new data
 # the function should take a GameName  as a parameter and change the number of players and server up/down status
 # the function should generate new data for the GameServer using the old data as a starting point.
-def update_data(GameName):
+def update_data(GameName: str):
     # search if the game server exists in the directory
     if os.path.exists(f"{DATA_DIRECTORY}/{GameName}.json"):
         # if it exists, open the file
