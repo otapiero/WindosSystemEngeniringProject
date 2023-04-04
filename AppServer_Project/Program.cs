@@ -1,17 +1,41 @@
 using AppServer_Project;
+using AppServer_Project.BuisnesEntities;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
-//NewMethod(args);
+//Defaultclass(args);
 partial class Program
 {
     static async Task Main(string[] args)
     {
+      //  await TestOfEmulator();
+      var games = await IGDBManager.GetQueryResponse();
+    }
+
+    private static async Task TestOfEmulator()
+    {
         // Example usage:
-        
+
         var gameServerNames = new List<string> { "Call Of Duty", "Starcraft" };
         var serversData = await EmulatorManager.GetServersData(gameServerNames);
         Console.WriteLine(serversData);
+        // convert the data to a list  of GameServer objects
+
+        var gameServers = EmulatorManager.GetGameServers(serversData);
+        // print the data to the console
+
+
+        foreach (var gameServer in gameServers)
+        {
+            Console.WriteLine(gameServer.game_name);
+            Console.WriteLine(gameServer.server_name);
+            Console.WriteLine(gameServer.server_region);
+            Console.WriteLine(gameServer.number_of_players);
+            Console.WriteLine(gameServer.server_up_down);
+
+            Console.WriteLine();
+        }
     }
-    
 
 
 
@@ -19,7 +43,7 @@ partial class Program
 
 
 
-    static void NewMethod(string[] args)
+    static void Defaultclass(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 

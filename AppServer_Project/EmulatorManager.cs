@@ -1,5 +1,6 @@
 ﻿namespace AppServer_Project
 {
+    using AppServer_Project.BuisnesEntities;
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
@@ -35,5 +36,13 @@
 
             return responseContent;
         }
+        // function that get a json string and return a list of GameServer objects
+        static public List<GameServer> GetGameServers(string json)
+        {
+            // convert the data to a list  of GameServer objects
+            var gameServers = JsonSerializer.Deserialize<ServerList>(json)?.game_servers;
+            return gameServers;
+        }
     }
+
 }

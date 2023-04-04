@@ -1,4 +1,6 @@
-﻿namespace AppServer_Project.BuisnesEntities
+﻿using System.Text.Json.Serialization;
+
+namespace AppServer_Project.BuisnesEntities
 {
     /*
    define a class to store data on a game server
@@ -13,10 +15,16 @@
    */
     public class GameServer
     {
-        public string GameName { get; set; }
-        public string ServerName { get; set; }
-        public string ServerRegion { get; set; }
-        public int NumberOfPlayers { get; set; }
-        public bool ServerUpDown { get; set; }
+        public string game_name { get; set; }
+        public int number_of_players { get; set; }
+        public List<object> results { get; set; }
+        public string server_name { get; set; }
+        public string server_region { get; set; }
+        public string server_up_down { get; set; }
+    }
+
+    public class ServerList
+    {
+        public List<GameServer> game_servers { get; set; }
     }
 }
