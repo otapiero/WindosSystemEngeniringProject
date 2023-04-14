@@ -16,11 +16,13 @@ namespace AppServer_Project.BuisnesEntities
     public class GameServer
     {
         public string game_name { get; set; }
+        public int id { get; set; }
         public int number_of_players { get; set; }
         public List<object> results { get; set; }
         public string server_name { get; set; }
         public string server_region { get; set; }
         public string server_up_down { get; set; }
+        public string date { get; set; }
     }
 
     public class ServerList

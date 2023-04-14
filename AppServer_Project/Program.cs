@@ -8,8 +8,10 @@ partial class Program
 {
     static async Task Main(string[] args)
     {
-      //  await TestOfEmulator();
-      var games = await IGDBManager.GetQueryResponse();
+        //  await TestOfEmulator();
+       // Defaultclass(args);
+          await TestOfEmulator();
+        Console.WriteLine();
     }
 
     private static async Task TestOfEmulator()

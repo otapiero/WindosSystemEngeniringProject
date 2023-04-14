@@ -11,10 +11,7 @@ namespace AppServer_Project.Controllers;
 [Route("[controller]")]
 public class GameEntitieController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Adventure", "Action", "RPG", "Strategy", "Simulation", "Sports", "Horror", "Platformer", "Puzzle", "Fighting"
-    };
+    
 
     private readonly ILogger<GameEntitieController> _logger;
 
@@ -24,16 +21,9 @@ public class GameEntitieController : ControllerBase
     }
 
     [HttpGet(Name = "GetGameEntities")]
-    public IEnumerable<GameEntitie> Get()
+    public async Task<IActionResult> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new GameEntitie
-        {
-            Id = index,
-            Name = "Example Game " + index,
-            ArtworkUrl = "abc" + index,
-            Summary = "This is an example game of the " + Summaries[(index - 1) % 10] + " genre."
-        })
-        .ToArray();
+        return Ok(await IGDBManager.QueryFromIGDBAPI());
     }
 }
 

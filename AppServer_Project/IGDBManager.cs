@@ -16,7 +16,7 @@ public class IGDBManager
     }
 
     //  function that due a query to igdb api
-    static public async Task<Game[]> QueryFromIGDBAPI()
+    static public async Task<List<GameEntitie>> QueryFromIGDBAPI()
     {
         var client = createIGDBClient();
         var games = await client.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: "fields artworks.*,name,summary,id; limit 50; where rating > 95;");
@@ -43,7 +43,7 @@ public class IGDBManager
 
         Console.WriteLine(x);
 
-        return games;
+        return listOfGames;
 
     }
 
