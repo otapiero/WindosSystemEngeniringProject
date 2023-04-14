@@ -9,7 +9,7 @@ namespace AppServer_Project.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GameEntitieController : ControllerBase
+    public class GameEntitieController : ControllerBase
 {
     
 
