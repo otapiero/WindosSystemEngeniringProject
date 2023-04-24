@@ -16,18 +16,18 @@ public class IGDBManager
     }
 
     //  function that due a query to igdb api
-    static public async Task<List<GameEntitie>> QueryFromIGDBAPI()
+    static public async Task<List<GameData>> QueryFromIGDBAPI()
     {
         var client = createIGDBClient();
         var games = await client.QueryAsync<Game>(IGDBClient.Endpoints.Games, query: "fields artworks.*,name,summary,id; limit 50; where rating > 95;");
-        var listOfGames = new List<GameEntitie>();
+        var listOfGames = new List<GameData>();
         var x = 0;
         foreach (var game in games)
         {
 
             if (game.Artworks != null)
             {
-                var gameEntitie = new GameEntitie
+                var gameEntitie = new GameData
                 {
                     Name = game.Name,
                     ArtworkUrl = game.Artworks.Values[0].ImageId,

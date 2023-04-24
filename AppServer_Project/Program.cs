@@ -8,9 +8,10 @@ partial class Program
 {
     static async Task Main(string[] args)
     {
-        //  await TestOfEmulator();
+        
+         await TestOfEmulator();
        // Defaultclass(args);
-          await TestOfEmulator();
+         // await TestOfEmulator();
         Console.WriteLine();
     }
 
@@ -29,12 +30,6 @@ partial class Program
 
         foreach (var gameServer in gameServers)
         {
-            Console.WriteLine(gameServer.game_name);
-            Console.WriteLine(gameServer.server_name);
-            Console.WriteLine(gameServer.server_region);
-            Console.WriteLine(gameServer.number_of_players);
-            Console.WriteLine(gameServer.server_up_down);
-
             Console.WriteLine();
         }
     }

@@ -1,4 +1,4 @@
-﻿using AppServer_Project;
+﻿using AppServer_Project.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -40,7 +40,7 @@ namespace YourNamespace.Controllers
             foreach (var server in servers)
             {
                 // Update server properties as needed
-                server.date = DateTime.Now.ToString();
+                server.DateTime = DateTime.Now;
             }
             // Save changes to the local database
             _context.SaveChanges();
