@@ -1,68 +1,50 @@
-'''
-define functions that will generate data for a game server.
-the function should create GameServer objects and store them to json files in the GameServerData directory.
-'''
-import json
-import os
-
-from GameServer import GameServer
+from datetime import datetime, timedelta
 import random
 
-default_list_of_games = ["League of Legends", "World of Warcraft", "Minecraft", "Fortnite", "Call of Duty",
-                         "Counter Strike", "Grand Theft Auto", "Overwatch", "Halo", "Starcraft"]
-DATA_DIRECTORY = "GameServerData"
+from models.GameServer import GameServer
+from models.GameServerDataStat import GameServerDataStat
 
 
-# define a function that will generate a GameServer object with random data for each game in the list_of_games list
-def generate_data(list_of_games: list):
-    # create an empty list to hold GameServer objects
-    game_servers = []
-    # iterate over the list of games
-    for game in list_of_games:
-        # create a GameServer object with random data
-        game_server = GameServer(game, f"{game} Server", random.choice(["North America", "Europe", "Asia"]),
-                                 random.randint(100, 100000), random.choice(["up", "down"]))
-        # add the GameServer object to the list of GameServers
-        game_servers.append(game_server)
-    # return the list of GameServers
-    return game_servers
+class GameServerDataGenerator:
+    @staticmethod
+    def generate_game_server ( game_name: str, server_name: str ):
+        player_count = random.randint(0, 100)
+        server_region = random.choice(['US East', 'US West', 'EU', 'Asia', 'Australia'])
+        date_time = datetime.now()
+        cpu_usage = round(random.uniform(0, 100), 2)
+        memory_usage = round(random.uniform(0, 100), 2)
+        max_memory = round(random.uniform(0, 100), 2)
+        max_cpu = round(random.uniform(0, 100), 2)
+        server_up = random.choice([True, False])
+        temperature = random.randint(0, 100)
 
+        game_server = GameServer(game_name=game_name, server_name=server_name, player_count=player_count,
+                                 server_region=server_region, date_time=date_time, cpu_usage=cpu_usage,
+                                 memory_usage=memory_usage, max_memory=max_memory, max_cpu=max_cpu,
+                                 server_up=server_up, temperature=temperature)
 
-# define a function that will store data to a json file.
-#  the function should take a GameServer object as a parameter.
-
-
-
-# define a function that will update the data in a game server json file with new data
-# the function should take a GameName  as a parameter and change the number of players and server up/down status
-# the function should generate new data for the GameServer using the old data as a starting point.
-def update_data(GameName: str):
-    # search if the game server exists in the directory
-    if os.path.exists(f"{DATA_DIRECTORY}/{GameName}.json"):
-        # if it exists, open the file
-        with open(f"{DATA_DIRECTORY}/{GameName}.json") as json_file:
-            # load the file into a dictionary
-            data = json.load(json_file)
-            # create a GameServer object from the dictionary
-            game_server = GameServer(data["game_name"], data["server_name"], data["server_region"],
-                                     data["number_of_players"], data["server_up_down"])
-            # change the number of players using the old number of players as a starting point
-            number = game_server.get_number_of_players() + random.randint(-1000, 1000)
-            number = 0 if number < 0 else number
-            game_server.set_number_of_players(number)
-            # change the server up/down status
-            game_server.set_server_up_down(random.choice(["up", "down"]))
-            # return the GameServer object
-            return game_server
-    else:
-        # if the game server does not exist, create a new GameServer object
-        # using the generate_data function
-        game_server = generate_data([GameName])[0]
-        # return the GameServer object
         return game_server
 
+    @staticmethod
+    def generate_game_server_stats ( server_name: str, date_time_start: str, date_time_end: str ):
 
-'''# initialize game servers data
-lst = generate_data(default_list_of_games)
-for i in lst:
-    store_data(i)'''
+        game_server_stats = []
+        date_time_start = datetime.strptime(date_time_start, '%Y-%m-%d %H')
+        date_time_end = datetime.strptime(date_time_end, '%Y-%m-%d %H')
+        delta = date_time_end - date_time_start
+        for i in range(delta.days + 1):
+            date = date_time_start + timedelta(days=i)
+            for j in range(24):
+                hour = j if j >= 10 else f"0{j}"
+                game_server_stat = GameServerDataStat(
+                        date_time=datetime.strptime(f"{date.date()} {hour}", '%Y-%m-%d %H'),
+                        cpu_usage=round(random.uniform(0, 100), 2),
+                        memory_usage=round(random.uniform(0, 100), 2),
+                        max_memory=round(random.uniform(0, 100), 2),
+                        max_cpu=round(random.uniform(0, 100), 2),
+                        server_up=random.choice([True, False]),
+                        temperature=random.randint(0, 100),
+                        player_count=random.randint(0, 100)
+                )
+                game_server_stats.append(game_server_stat)
+        return game_server_stats
