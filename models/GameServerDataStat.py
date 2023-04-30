@@ -2,7 +2,7 @@ import datetime
 
 
 class GameServerDataStat:
-    def __init__(self, date_time: datetime.datetime, cpu_usage: float, player_count: int, memory_usage: float,
+    def __init__(self, date_time: str, cpu_usage: float, player_count: int, memory_usage: float,
                  max_memory: float, max_cpu: float, server_up: bool, temperature: int):
         self.DateTime = date_time
         self.CpuUsage = cpu_usage

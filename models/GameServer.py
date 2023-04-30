@@ -3,7 +3,7 @@ import datetime
 
 class GameServer:
     def __init__(self, game_name: str, player_count: int, server_name: str, server_region: str,
-                 date_time: datetime.datetime, cpu_usage: float, memory_usage: float, max_memory: float,
+                 date_time: str, cpu_usage: float, memory_usage: float, max_memory: float,
                  max_cpu: float, server_up: bool, temperature: int):
         self.GameName = game_name
         self.PlayerCount = player_count

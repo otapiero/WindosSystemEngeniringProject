@@ -16,6 +16,17 @@ def create_game_server():
     game_server = GameServerDataGenerator.generate_game_server(game_name, server_name)
     # return the GameServer object as JSON data
     return jsonify(game_server.to_dict())
+@app.route("/gameserverdatastatlive", methods=["POST"])
+def create_game_server_stat_live():
+    # get the request body
+    request_body = request.get_json(force=True)
+    # extract game_name and server_name from the request body
+    server_name = request_body["server_name"]
+    # create a new GameServer object
+    game_server_stat = GameServerDataGenerator.generate_game_server_stat_live(server_name)
+    # return the GameServer object as JSON data
+    return jsonify(game_server_stat.to_dict())
+
 
 @app.route("/gameserverdatastats", methods=["POST"])
 def create_game_server_stats():
@@ -30,7 +41,7 @@ def create_game_server_stats():
     # create a list of dictionaries from the GameServerDataStats
     game_server_data_stats_dicts = [data_stat.to_dict() for data_stat in game_server_data_stats]
     # create a dictionary to hold the list of dictionaries
-    data = {"game_server_data_stats": game_server_data_stats_dicts}
+    data = {"GameServerDataStat": game_server_data_stats_dicts}
     # return the dictionary as JSON data
     return jsonify(data)
 
