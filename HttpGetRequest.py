@@ -56,7 +56,7 @@ curl -X GET -H 'accept: text/plain'  http://localhost:5098/GameEntitie
 '''
 curl -X POST -H  "Content-Type: application/json" -d "{\"game_name\":\"call of duty\",\"server_name\":\"cod server 1\"}"  http://localhost:5098/gameservers
 
-
+curl -X GET -H    'accept: */*' http://localhost:5000/GamesData
 
 curl -X POST -H "Content-Type: application/json" -d "{\"server_name\":\"cod server 1\", \"date_time_start\":\"2023-04-25 00\", \"date_time_end\":\"2023-04-26 00\"}" http://localhost:5098/gameserverdatastats
 
