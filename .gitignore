@@ -2,3 +2,17 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+/AppServer_Project/UpgradeLog.htm
+/AppServer_Project/Properties
+/AppServer_Project/obj
+/AppServer_Project/bin/Debug/net6.0
+/AppServer_Project/Backup
+/AppServer_Project/.vs
+/.vs
+/AppServer_Project/Dockerfile
+/AppServer_Project/appsettings.json
+/AppServer_Project/appsettings.Development.json
+*.sln
+*.user
+/AppServer_Project/AppServer_Project.csproj
+*.dockerignore
