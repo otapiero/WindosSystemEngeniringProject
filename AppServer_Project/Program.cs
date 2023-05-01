@@ -1,17 +1,15 @@
 using AppServer_Project;
-using AppServer_Project.BuisnesEntities;
+using AppServer_Project.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-//Defaultclass(args);
+//RunApp(args);
 partial class Program
 {
     static async Task Main(string[] args)
     {
-        
-         await TestOfEmulator();
-       // Defaultclass(args);
-         // await TestOfEmulator();
+        RunApp(args);
+         
         Console.WriteLine();
     }
 
@@ -19,19 +17,20 @@ partial class Program
     {
         // Example usage:
 
-        var gameServerNames = new List<string> { "Call Of Duty", "Starcraft" };
-        var serversData = await EmulatorManager.GetServersData(gameServerNames);
-        Console.WriteLine(serversData);
+        var serverData = await EmulatorManager.CreateGameServer(gameName: "game1", serverName: "server1");
+        Console.WriteLine(serverData);
         // convert the data to a list  of GameServer objects
+        var serversStatData = await EmulatorManager.CreateGameServerStats(serverName: "server1", dateTimeStart: "2021-05-01 00:00:00", dateTimeEnd: "2021-05-01 23:59:59");
+        Console.WriteLine(serversStatData);
+        var serverStatData = await EmulatorManager.CreateGameServerLive(serverName: "server1");
+        Console.WriteLine(serverStatData);
 
-        var gameServers = EmulatorManager.GetGameServers(serversData);
+
         // print the data to the console
+        Console.WriteLine();
 
 
-        foreach (var gameServer in gameServers)
-        {
-            Console.WriteLine();
-        }
+       
     }
 
 
@@ -40,7 +39,7 @@ partial class Program
 
 
 
-    static void Defaultclass(string[] args)
+    static void RunApp(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 

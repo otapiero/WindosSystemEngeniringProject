@@ -1,4 +1,4 @@
-﻿namespace AppServer_Project.BuisnesEntities;
+﻿namespace AppServer_Project.Models;
 
 // a class that contains the data of a game
 public class GameData

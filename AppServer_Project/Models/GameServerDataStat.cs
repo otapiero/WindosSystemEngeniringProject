@@ -1,6 +1,8 @@
-﻿namespace AppServer_Project.Models
+﻿using AppServer_Project.Models;
+
+namespace AppServer_Project.Models
 {
-    public class GameServerData
+    public class GameServerDataStat
     {
         public DateTime DateTime { get; set; }
         // cpu usage
@@ -15,5 +17,9 @@
         public float MaxCpu { get; set; }
         public bool ServerUp { get; set; }
         public int Temperature { get; set; }
+    }
+    public class ServersStatInList
+    {
+        public List<GameServerDataStat> GameServerDataStat { get; set; }
     }
 }

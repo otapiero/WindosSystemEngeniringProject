@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace AppServer_Project.BuisnesEntities
+namespace AppServer_Project.Models
 {
     /*
    define a class to store data on a game server

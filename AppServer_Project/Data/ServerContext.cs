@@ -1,4 +1,4 @@
-﻿using AppServer_Project.BuisnesEntities;
+﻿using AppServer_Project.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppServer_Project.Data;
@@ -13,7 +13,7 @@ public class ServerContext : DbContext
  
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=ContosoPizza-Part1;Integrated Security=True;");
+        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=AppServer_Project.AvailebleGames;Trusted_Connection=True;MultipleActiveResultSets=true");
     }
 }
 
