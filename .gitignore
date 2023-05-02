@@ -18,3 +18,12 @@
 *.dockerignore
 /AppServer_Project/AppServer_Project.sln
 /AppServer_Project/AppServer_Project.csproj
+/AppServer_Project/obj/Debug/net6.0/AppServer_Project.dll
+/AppServer_Project/obj/Debug/net6.0/AppServer_Project.pdb
+/AppServer_Project/obj/Debug/net6.0/refint/AppServer_Project.dll
+/AppServer_Project/obj/Debug/net6.0/ref/AppServer_Project.dll
+/AppServer_Project/bin/Debug/net6.0/AppServer_Project.pdb
+/AppServer_Project/bin/Debug/net6.0/AppServer_Project.dll
+/AppServer_Project/.vs/AppServer_Project/DesignTimeBuild/.dtbcache.v2
+/AppServer_Project/.vs/AppServer_Project/v17/.suo
+/.vs/slnx.sqlite
