@@ -12,6 +12,7 @@ partial class Program
     {
         RunApp(args);
         // await IGDBManager.GetGamesFromApi();
+        
     }
 
 
