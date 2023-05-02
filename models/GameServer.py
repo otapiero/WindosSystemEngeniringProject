@@ -1,10 +1,7 @@
-import datetime
-
-
 class GameServer:
-    def __init__(self, game_name: str, player_count: int, server_name: str, server_region: str,
-                 date_time: str, cpu_usage: float, memory_usage: float, max_memory: float,
-                 max_cpu: float, server_up: bool, temperature: int):
+    def __init__ ( self, game_name: str, player_count: int, server_name: str, server_region: str,
+                   date_time: str, cpu_usage: float, memory_usage: float, server_up: bool, temperature: int,
+                   max_score: int, player_time_min: int ):
         self.GameName = game_name
         self.PlayerCount = player_count
         self.ServerName = server_name
@@ -12,12 +9,12 @@ class GameServer:
         self.DateTime = date_time
         self.CpuUsage = cpu_usage
         self.MemoryUsage = memory_usage
-        self.MaxMemory = max_memory
-        self.MaxCpu = max_cpu
         self.ServerUp = server_up
         self.Temperature = temperature
+        self.MaxScore = max_score
+        self.PlayerTimeMin = player_time_min
 
-    def to_dict(self) -> dict:
+    def to_dict ( self ) -> dict:
         return {
             'GameName': self.GameName,
             'PlayerCount': self.PlayerCount,
@@ -26,14 +23,14 @@ class GameServer:
             'DateTime': self.DateTime,
             'CpuUsage': self.CpuUsage,
             'MemoryUsage': self.MemoryUsage,
-            'MaxMemory': self.MaxMemory,
-            'MaxCpu': self.MaxCpu,
             'ServerUp': self.ServerUp,
-            'Temperature': self.Temperature
+            'Temperature': self.Temperature,
+            'MaxScore': self.MaxScore,
+            'PlayerTimeMin': self.PlayerTimeMin
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> 'GameServer':
+    def from_dict ( cls, data: dict ) -> 'GameServer':
         return cls(
             data['GameName'],
             data['PlayerCount'],
@@ -42,8 +39,8 @@ class GameServer:
             data['DateTime'],
             data['CpuUsage'],
             data['MemoryUsage'],
-            data['MaxMemory'],
-            data['MaxCpu'],
             data['ServerUp'],
-            data['Temperature']
+            data['Temperature'],
+            data['MaxScore'],
+            data['PlayerTimeMin']
         )
