@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AppServer_Project.NewFolder;
 
 namespace AppServer_Project.Controllers
 {
@@ -14,7 +15,7 @@ namespace AppServer_Project.Controllers
     public class ServerGameController : ControllerBase
     {
         private readonly int timeUpdate = 10;
-        private readonly ServerContext _context;
+        private readonly DataBaseManager dbManager;
         private readonly Timer _timer;
         private readonly ILogger<ServerGameController> _logger;
 
@@ -23,27 +24,25 @@ namespace AppServer_Project.Controllers
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="logger">The logger.</param>
-        public ServerGameController(ServerContext context, ILogger<ServerGameController> logger)
+        public ServerGameController(ILogger<ServerGameController> logger)
         {
-            _context = context;
+            dbManager = new();
             _timer = new Timer(UpdateServers, null, TimeSpan.Zero, TimeSpan.FromSeconds(timeUpdate));
             _logger = logger;
         }
-        [HttpGet("ServersList", Name = "GetServersList")]
+        [HttpGet("ServersList", Name = "GetServer")]
         public async Task<IActionResult> GetServersList()
         {
-            // get from data base one GameServer for each different nameserver
-            var servers = _context.Servers.ToList();
-            return Ok(servers);
+            var serversList = await dbManager.GetServersList();
+            return Ok(serversList);
         }
         [HttpGet("ServerStat", Name = "GetServerStat")]
-        public async Task<IActionResult> GetServerStat(string serverName ,DateTime? from ,DateTime? until)
+        public async Task<IActionResult> GetServerStat(string serverName, DateTime? from, DateTime? until)
         {
             if (from != null && until != null)
             {
 
-                var serverStats = _context.Servers.Where(x => x.ServerName == serverName &&
-                (x.DateTime >= from && x.DateTime <= until)).ToList();
+                var serverStats = dbManager.GetServersByDate(serverName, from, until);
                 return Ok(serverStats);
 
             }
@@ -72,31 +71,24 @@ namespace AppServer_Project.Controllers
                 foreach (var gameName in AvailebleGames.GetGames())
                 {
                     var serverName = gameName + " server";
-                    var server = _context.Servers.FirstOrDefault(x => x.GameName == gameName);
-                    if (server == null)
+                    var server = await dbManager.GetServer(gameName, serverName);
+                    var serverStatLive = await EmulatorManager.CreateGameServerLive(serverName);
+                    var gameSeverUpdate = new GameServer
                     {
-                        _context.Servers.Add(await EmulatorManager.CreateGameServer(gameName,serverName));
-                    }
-                    else
-                    {
-                        var serverStatLive = await EmulatorManager.CreateGameServerLive(serverName);
-                        var gameSeverUpdate = new GameServer
-                        {
-                            GameName = server.GameName,
-                            ServerName = server.ServerName,
-                            ServerRegion = server.ServerRegion,
-                            PlayerCount = serverStatLive.PlayerCount,
-                            DateTime = serverStatLive.DateTime,
-                            CpuUsage = serverStatLive.CpuUsage,
-                            MemoryUsage = serverStatLive.MemoryUsage,
-                            MaxCpu = serverStatLive.MaxCpu,
-                            MaxMemory = serverStatLive.MaxMemory,
-                            ServerUp = serverStatLive.ServerUp,
-                            Temperature = serverStatLive.Temperature           
-                        };
-                        _context.Servers.Add(gameSeverUpdate);
-                    }
-                    _context.SaveChanges();
+                        GameName = server.GameName,
+                        ServerName = server.ServerName,
+                        ServerRegion = server.ServerRegion,
+                        PlayerCount = serverStatLive.PlayerCount,
+                        DateTime = serverStatLive.DateTime,
+                        CpuUsage = serverStatLive.CpuUsage,
+                        MemoryUsage = serverStatLive.MemoryUsage,
+                        MaxCpu = serverStatLive.MaxCpu,
+                        MaxMemory = serverStatLive.MaxMemory,
+                        ServerUp = serverStatLive.ServerUp,
+                        Temperature = serverStatLive.Temperature
+                    };
+                    await dbManager.AddServer(gameSeverUpdate);
+                    // TODO: enter gameSeverUpdate to data base
                 }
 
             }
@@ -104,11 +96,10 @@ namespace AppServer_Project.Controllers
             {
                 Console.WriteLine(ex.Message);
             }
-          
-           
+
+
         }
 
 
     }
 }
-

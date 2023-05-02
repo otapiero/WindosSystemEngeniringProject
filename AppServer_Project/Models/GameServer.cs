@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppServer_Project.Models
 {
@@ -14,16 +14,19 @@ namespace AppServer_Project.Models
   - server_up_down (boolean)
 
    */
+
     public class GameServer
     {
         public string GameName { get; set; }
 
         public int PlayerCount { get; set; }
         [Key]
+        [Column(Order = 0)]
         public string ServerName { get; set; }
 
         public string ServerRegion { get; set; }
-
+        [Key]
+        [Column(Order = 1)]
         public DateTime DateTime { get; set; }
         // cpu usage
         public float CpuUsage { get; set; }

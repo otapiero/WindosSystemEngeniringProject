@@ -45,7 +45,6 @@ public class IGDBManager
                     listOfGames.Add(gameEntity);
                 }
             }
-            Console.WriteLine("Count of games with complete data: " + listOfGames.Count );
 
             return listOfGames;
         }

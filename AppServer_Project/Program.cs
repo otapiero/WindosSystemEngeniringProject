@@ -1,5 +1,7 @@
 using AppServer_Project;
+using AppServer_Project.Data;
 using AppServer_Project.Models;
+using AppServer_Project.NewFolder;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -8,10 +10,10 @@ partial class Program
 {
     static async Task Main(string[] args)
     {
-        RunApp(args);
-         
-        Console.WriteLine();
+        //RunApp(args);
+        // await IGDBManager.GetGamesFromApi();
     }
+
 
     private static async Task TestOfEmulator()
     {

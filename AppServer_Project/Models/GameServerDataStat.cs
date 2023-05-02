@@ -4,6 +4,7 @@ namespace AppServer_Project.Models
 {
     public class GameServerDataStat
     {
+        public string ServerName { get; set; }
         public DateTime DateTime { get; set; }
         // cpu usage
         public float CpuUsage { get; set; }
@@ -12,7 +13,6 @@ namespace AppServer_Project.Models
         public float MemoryUsage { get; set; }
         // max memory
         public float MaxMemory { get; set; }
-
         // max cpu
         public float MaxCpu { get; set; }
         public bool ServerUp { get; set; }
