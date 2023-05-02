@@ -16,3 +16,5 @@
 *.user
 /AppServer_Project/AppServer_Project.csproj
 *.dockerignore
+/AppServer_Project/AppServer_Project.sln
+/AppServer_Project/AppServer_Project.csproj
