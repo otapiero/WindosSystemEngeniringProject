@@ -10,7 +10,7 @@ partial class Program
 {
     static async Task Main(string[] args)
     {
-        //RunApp(args);
+        RunApp(args);
         // await IGDBManager.GetGamesFromApi();
     }
 

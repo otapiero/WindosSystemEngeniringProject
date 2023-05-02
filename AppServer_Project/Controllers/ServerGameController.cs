@@ -42,7 +42,7 @@ namespace AppServer_Project.Controllers
             if (from != null && until != null)
             {
 
-                var serverStats = dbManager.GetServersByDate(serverName, from, until);
+                var serverStats = await dbManager.GetServersByDate(serverName, from, until);
                 return Ok(serverStats);
 
             }

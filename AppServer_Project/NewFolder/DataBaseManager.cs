@@ -11,12 +11,9 @@ using Microsoft.EntityFrameworkCore;
 
 public class DataBaseManager
 {
-    private readonly ServersContext _context;
+    static ServersContext _context =new ServersContext();
 
-    public DataBaseManager()
-    {
-        _context = new ServersContext();
-    }
+  
 
     public async Task<bool> AddServer(GameServer server)
     {
@@ -24,8 +21,15 @@ public class DataBaseManager
         {
             return false;
         }
-
+        while (_context.Database.CurrentTransaction != null)
+        {
+            await Task.Delay(100);
+        }
         _context.Servers.Add(server);
+        while (_context.Database.CurrentTransaction != null)
+        {
+            await Task.Delay(100);
+        }
         await _context.SaveChangesAsync();
         return true;
     }
@@ -39,16 +43,26 @@ public class DataBaseManager
             {
                 continue;
             }
-
+            while (_context.Database.CurrentTransaction != null)
+            {
+                await Task.Delay(100); 
+            }
             _context.Servers.Add(server);
             count++;
         }
-
+        while (_context.Database.CurrentTransaction != null)
+        {
+            await Task.Delay(100); 
+        }
         await _context.SaveChangesAsync();
         return count;
     }
     public async Task<List<GameServer>> GetServersList()
     {
+        while (_context.Database.CurrentTransaction != null)
+        {
+            await Task.Delay(100);
+        }
         // return one server from each server name
         var servers = await _context.Servers
             .GroupBy(s => s.ServerName)
@@ -90,7 +104,14 @@ public class DataBaseManager
         try
         {
 
-
+            while (_context.Database.CurrentTransaction != null)
+            {
+                await Task.Delay(100);
+            }
+            while (_context.Database.CurrentTransaction != null)
+            {
+                await Task.Delay(100);
+            }
             var servers = await _context.Servers
                 .Where(s => s.ServerName == serverName && s.DateTime >= from && s.DateTime <= until)
                 .ToListAsync();
@@ -104,11 +125,19 @@ public class DataBaseManager
                 serverStats.AddRange(await EmulatorManager.CreateGameServerStats(serverName,
                    from?.ToString("yyyy-MM-dd HH:mm:ss"), until?.ToString("yyyy-MM-dd HH:mm:ss")));
                 var listOfServers = new List<GameServer>();
+                while (_context.Database.CurrentTransaction != null)
+                {
+                    await Task.Delay(100);
+                }
                 var defaultServer = _context.Servers.FirstOrDefault(s => s.ServerName == serverName);
                 if (defaultServer != null)
                 {
                     foreach (var server in serverStats)
                     {
+                        while (_context.Database.CurrentTransaction != null)
+                        {
+                            await Task.Delay(100);
+                        }
                         if (!_context.Servers.Any(s => s.ServerName == serverName && s.DateTime == server.DateTime))
                             listOfServers.Add(new GameServer
                             {
@@ -126,6 +155,10 @@ public class DataBaseManager
                             });
                     }
                     await AddServers(listOfServers);
+                    while (_context.Database.CurrentTransaction != null)
+                    {
+                        await Task.Delay(100); 
+                    }
                     servers = await _context.Servers
                         .Where(s => s.ServerName == serverName && s.DateTime >= from && s.DateTime <= until)
                         .ToListAsync();
