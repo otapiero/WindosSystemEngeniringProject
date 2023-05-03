@@ -9,10 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\**" />
-    <Content Remove="Migrations\**" />
-    <EmbeddedResource Remove="Migrations\**" />
-    <None Remove="Migrations\**" />
+    <Compile Remove="Migration\**" />
+    <Content Remove="Migration\**" />
+    <EmbeddedResource Remove="Migration\**" />
+    <None Remove="Migration\**" />
   </ItemGroup>
 
   <ItemGroup>

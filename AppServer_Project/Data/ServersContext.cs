@@ -13,7 +13,7 @@ public class ServersContext : DbContext
  
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AppServerProject;Integrated Security=True;");
+        optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=AppServerDB;Integrated Security=True;");
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

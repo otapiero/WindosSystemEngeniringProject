@@ -6,7 +6,8 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AppServer_Project.NewFolder;
+using AppServer_Project.SourcesManegers;
+using AppServer_Project.Tools;
 
 namespace AppServer_Project.Controllers
 {
@@ -14,7 +15,7 @@ namespace AppServer_Project.Controllers
     [Route("api/[controller]")]
     public class ServerGameController : ControllerBase
     {
-        private readonly int timeUpdate = 10;
+        private readonly int timeUpdate = 1000;
         private readonly DataBaseManager dbManager;
         private readonly Timer _timer;
         private readonly ILogger<ServerGameController> _logger;
@@ -29,6 +30,10 @@ namespace AppServer_Project.Controllers
             dbManager = new();
             _timer = new Timer(UpdateServers, null, TimeSpan.Zero, TimeSpan.FromSeconds(timeUpdate));
             _logger = logger;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("ServerGameController is up");
+            Console.ResetColor();
+            Console.WriteLine();
         }
         [HttpGet("ServersList", Name = "GetServer")]
         public async Task<IActionResult> GetServersList()
@@ -66,6 +71,10 @@ namespace AppServer_Project.Controllers
         /// <param name="state">The state.</param>
         private async void UpdateServers(object state)
         {
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine("UpdateServers");
+            Console.ResetColor();
+            Console.WriteLine();
             try
             {
                 foreach (var gameName in AvailebleGames.GetGames())
@@ -82,10 +91,11 @@ namespace AppServer_Project.Controllers
                         DateTime = serverStatLive.DateTime,
                         CpuUsage = serverStatLive.CpuUsage,
                         MemoryUsage = serverStatLive.MemoryUsage,
-                        MaxCpu = serverStatLive.MaxCpu,
-                        MaxMemory = serverStatLive.MaxMemory,
+                      
                         ServerUp = serverStatLive.ServerUp,
-                        Temperature = serverStatLive.Temperature
+                        Temperature = serverStatLive.Temperature,
+                        MaxScore = serverStatLive.MaxScore,
+                        PlayerTimeMin = serverStatLive.PlayerTimeMin
                     };
                     await dbManager.AddServer(gameSeverUpdate);
                     // TODO: enter gameSeverUpdate to data base

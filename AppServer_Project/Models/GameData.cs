@@ -4,7 +4,7 @@
 public class GameData
 {
     // the url of the images server by the api
-    static private string imagesUrl = "https://images.igdb.com/igdb/image/upload/t_1080p/{hash}.jpg";
+    static private string imagesUrl = "https://images.igdb.com/igdb/image/upload/t_cover_small/{hash}.jpg";
 
     public string Name { get; set; }
     private string artworkUrl { get; set;}

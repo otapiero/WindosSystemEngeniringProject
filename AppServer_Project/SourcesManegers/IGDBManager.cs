@@ -1,6 +1,8 @@
 ﻿using IGDB;
 using IGDB.Models;
 using AppServer_Project.Models;
+using AppServer_Project.Tools;
+
 namespace AppServer_Project;
 
 public class IGDBManager
@@ -56,10 +58,3 @@ public class IGDBManager
     }
 
 }
-/*
- * var client = createIGDBClient();
-        var gamesAvailabaleNamesAsString = $"({string.Join(",", AvailebleGames.Games.Select(g => $"\"{g}\""))})";
-        var gamesFromIGDB = await client.QueryAsync<Game>(IGDBClient.Endpoints.Games,
-            query: $"fields artworks.*,name,summary,id; where name ={gamesAvailabaleNamesAsString};");
-        var listOfGames = new List<GameData>();
-*/

@@ -4,6 +4,7 @@ using AppServer_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppServer_Project.Migrations
 {
     [DbContext(typeof(ServersContext))]
-    partial class ServerContextModelSnapshot : ModelSnapshot
+    [Migration("20230502183104_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,16 +42,16 @@ namespace AppServer_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("MaxCpu")
-                        .HasColumnType("real");
-
-                    b.Property<float>("MaxMemory")
-                        .HasColumnType("real");
+                    b.Property<int>("MaxScore")
+                        .HasColumnType("int");
 
                     b.Property<float>("MemoryUsage")
                         .HasColumnType("real");
 
                     b.Property<int>("PlayerCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerTimeMin")
                         .HasColumnType("int");
 
                     b.Property<string>("ServerRegion")

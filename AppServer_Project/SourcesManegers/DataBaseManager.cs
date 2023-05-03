@@ -1,5 +1,4 @@
-﻿namespace AppServer_Project.NewFolder;
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +7,13 @@ using AppServer_Project.Data;
 using AppServer_Project.Models;
 using Microsoft.EntityFrameworkCore;
 
+namespace AppServer_Project.SourcesManegers;
 
 public class DataBaseManager
 {
-    static ServersContext _context =new ServersContext();
+    static ServersContext _context = new ServersContext();
 
-  
+
 
     public async Task<bool> AddServer(GameServer server)
     {
@@ -45,14 +45,14 @@ public class DataBaseManager
             }
             while (_context.Database.CurrentTransaction != null)
             {
-                await Task.Delay(100); 
+                await Task.Delay(100);
             }
             _context.Servers.Add(server);
             count++;
         }
         while (_context.Database.CurrentTransaction != null)
         {
-            await Task.Delay(100); 
+            await Task.Delay(100);
         }
         await _context.SaveChangesAsync();
         return count;
@@ -86,12 +86,11 @@ public class DataBaseManager
                 ServerName = serverName,
                 ServerRegion = newGameServer?.ServerRegion ?? "",
                 DateTime = newGameServer?.DateTime ?? DateTime.Now,
-                CpuUsage = newGameServer?.CpuUsage ?? 0,
                 MemoryUsage = newGameServer?.MemoryUsage ?? 0,
-                MaxMemory = newGameServer?.MaxMemory ?? 0,
-                MaxCpu = newGameServer?.MaxCpu ?? 0,
+                CpuUsage = newGameServer?.CpuUsage ?? 0,
                 ServerUp = newGameServer?.ServerUp ?? false,
-                Temperature = newGameServer?.Temperature ?? 0
+                Temperature = newGameServer?.Temperature ?? 0,
+                MaxScore = newGameServer?.MaxScore ?? 0,
             };
             await AddServer(server);
         }
@@ -99,7 +98,14 @@ public class DataBaseManager
         return server;
     }
 
-    public async Task<List<GameServerDataStat>> GetServersByDate(string serverName, DateTime? from = null, DateTime? until = null)
+    /// <summary>
+    /// Gets the servers by date.
+    /// </summary>
+    /// <param name="serverName">The server name.</param>
+    /// <param name="from">The from.</param>
+    /// <param name="until">The until.</param>
+    /// <returns>A Task.</returns>
+    public async Task<List<GameServer>> GetServersByDate(string serverName, DateTime? from = null, DateTime? until = null)
     {
         try
         {
@@ -112,18 +118,27 @@ public class DataBaseManager
             {
                 await Task.Delay(100);
             }
+            await Task.Delay(100);
             var servers = await _context.Servers
                 .Where(s => s.ServerName == serverName && s.DateTime >= from && s.DateTime <= until)
                 .ToListAsync();
+            await Task.Delay(100);
+            Console.WriteLine($"servers count: {servers.Count}");
             List<GameServerDataStat> serverStats = new();
 
             // Check if there are any missing servers
             var hours = (int)(until - from)?.TotalHours;
-            if (servers.Count != hours+1)
+            Console.WriteLine($"hours: {hours}");
+            if (servers.Count < hours+1)
             {
                 // add to database the missing servers
-                serverStats.AddRange(await EmulatorManager.CreateGameServerStats(serverName,
-                   from?.ToString("yyyy-MM-dd HH:mm:ss"), until?.ToString("yyyy-MM-dd HH:mm:ss")));
+                while (_context.Database.CurrentTransaction != null)
+                {
+                    await Task.Delay(100);
+                }
+                var updatedServers = await EmulatorManager.CreateGameServerStats(serverName,
+                   from?.ToString("yyyy-MM-dd HH:mm:ss"), until?.ToString("yyyy-MM-dd HH:mm:ss"));
+                serverStats.AddRange(updatedServers);
                 var listOfServers = new List<GameServer>();
                 while (_context.Database.CurrentTransaction != null)
                 {
@@ -148,16 +163,19 @@ public class DataBaseManager
                                 DateTime = server.DateTime,
                                 CpuUsage = server.CpuUsage,
                                 MemoryUsage = server.MemoryUsage,
-                                MaxMemory = server.MaxMemory,
-                                MaxCpu = server.MaxCpu,
                                 ServerUp = server.ServerUp,
-                                Temperature = server.Temperature
+                                Temperature = server.Temperature,
+                                MaxScore = server.MaxScore,
+                                PlayerTimeMin = server.PlayerTimeMin,
+
+
                             });
                     }
-                    await AddServers(listOfServers);
+                    var countUpdated = await AddServers(listOfServers);
+                    Console.WriteLine($"count of updated servers: {countUpdated}");
                     while (_context.Database.CurrentTransaction != null)
                     {
-                        await Task.Delay(100); 
+                        await Task.Delay(100);
                     }
                     servers = await _context.Servers
                         .Where(s => s.ServerName == serverName && s.DateTime >= from && s.DateTime <= until)
@@ -166,19 +184,8 @@ public class DataBaseManager
                 else
                     throw new ArgumentException("no such Server Name in the data base");
             }
-            serverStats = servers.Select(x => new GameServerDataStat
-            {
-                PlayerCount = x.PlayerCount,
-                ServerName = x.ServerName,
-                DateTime = x.DateTime,
-                CpuUsage = x.CpuUsage,
-                MemoryUsage = x.MemoryUsage,
-                MaxMemory = x.MaxMemory,
-                MaxCpu = x.MaxCpu,
-                ServerUp = x.ServerUp,
-                Temperature = x.Temperature
-            }).ToList();
-            return serverStats;
+           
+            return servers;
         }
         catch (Exception e)
         {
@@ -186,13 +193,8 @@ public class DataBaseManager
             Console.WriteLine("Error at DataBaseManager.GetServersByDate: " + e.Message);
             Console.ResetColor();
             Console.WriteLine();
-            return new List<GameServerDataStat>();
+            return new List<GameServer>();
         }
     }
 
 }
-
-
-
-
-
